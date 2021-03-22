@@ -7,31 +7,20 @@ class Homepage extends StatefulWidget {
    _HomepageState createState() => _HomepageState();
 }
 
-
-
-
-
-
-
+String username ='';
 class _HomepageState extends State<Homepage> {
 
-  String Username ='';
   _nameRetriever() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  
-  this.Username = prefs.getString('username') ?? '';
-  //  schoolText = prefs.getString('school') ?? '';
-  
-  print(Username);
+    username = prefs.getString('username') ?? '';
+    // print(username);
 }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _nameRetriever();
-    print(this.Username);
+
   }
 
    @override
@@ -40,16 +29,18 @@ class _HomepageState extends State<Homepage> {
     body: Row(
       children: [
         Container(
-          child: Text(this.Username,
-          style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'OpenSans',
+          child: Center(
+            child: Text(username,
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.w800,
+                ),
+              ),
             ),
-          ),
-        )
-      ],
-    ),      
-       
+          )
+        ],
+      ),
     );
   }
 } 

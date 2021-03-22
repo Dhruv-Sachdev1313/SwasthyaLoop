@@ -8,10 +8,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 Widget defaultHome;
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+
   SharedPreferences pref = await SharedPreferences.getInstance();
   bool isLogged = (pref.getBool('isLogged') ?? false) ;
-  WidgetsFlutterBinding.ensureInitialized();
-  // username = (pref.get('username') ?? '');
+
   defaultHome = new WelcomeScreen();
   if (isLogged) {
     defaultHome = new Homepage();
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Auth',
+      title: 'Swastyaloop',
       theme: ThemeData(
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
@@ -33,8 +33,6 @@ class MyApp extends StatelessWidget {
       home: defaultHome,
       routes: <String, WidgetBuilder>{
         "/home" : (BuildContext context) => Homepage(),
-        // "/b" : (BuildContext context) => Profile(),
-        // "/c" : (BuildContext context) => Mascot()
       }
     );
   }
