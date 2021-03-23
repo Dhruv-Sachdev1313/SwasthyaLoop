@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swasthyaloop/Screens/Login/login_screen.dart';
 import 'package:swasthyaloop/Screens/Welcome/welcome_screen.dart';
 import 'package:swasthyaloop/constants.dart';
 import 'Homepage.dart';
@@ -6,11 +7,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 Widget defaultHome;
-void main() async{
+String username = '';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences pref = await SharedPreferences.getInstance();
-  bool isLogged = (pref.getBool('isLogged') ?? false) ;
+  bool isLogged = pref.getBool('isLogged') ?? false;
+  username = pref.getString('username') ?? '';
 
   defaultHome = new WelcomeScreen();
   if (isLogged) {
@@ -33,6 +37,7 @@ class MyApp extends StatelessWidget {
       home: defaultHome,
       routes: <String, WidgetBuilder>{
         "/home" : (BuildContext context) => Homepage(),
+        "/login" : (BuildContext context) => LoginScreen(),
       }
     );
   }

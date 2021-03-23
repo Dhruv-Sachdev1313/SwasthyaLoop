@@ -8,8 +8,8 @@ import 'package:swasthyaloop/components/rounded_password_field.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String Username;
-String Password;
+
+String username = '';
 class Body extends StatelessWidget {
   const Body({
     Key key,
@@ -36,7 +36,7 @@ class Body extends StatelessWidget {
             RoundedInputField(
               hintText: "Your Username",
               onChanged: (value) {
-                Username = value;
+                username = value;
               },
             ),
             RoundedPasswordField(
@@ -47,7 +47,8 @@ class Body extends StatelessWidget {
               press: () async {
                 SharedPreferences pref = await SharedPreferences.getInstance();
                 pref.setBool("isLogged", true);
-                pref.setString("username",Username );
+                print(username);
+                pref.setString("username", username);
                 Navigator.of(context).pushReplacementNamed('/home');
               },
             ),
