@@ -23,7 +23,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  shared_preferences:  
+  shared_preferences:
+  line_awesome_icons: ^1.0.4+2
+  flutter_rating_bar: ^3.0.1+1  
 
 
   # The following adds the Cupertino Icons font to your application.
