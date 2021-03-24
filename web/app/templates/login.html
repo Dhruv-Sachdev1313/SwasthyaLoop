@@ -1,15 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
 
-{% extends "layouts/base.html" %}
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <meta name="keywords"
+              content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 4 admin, bootstrap 4, css3 dashboard, bootstrap 4 dashboard, Material Pro lite admin bootstrap 4 dashboard, frontend, responsive bootstrap 4 admin template, Material Pro lite design, Material Pro lite dashboard bootstrap 4 dashboard template">
+        <meta name="description"
+              content="Material Pro Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
+    
+        <meta name="robots" content="noindex,nofollow">
+    
+        <title>
+            SwasthyaLoop
+        </title>
+    
+        <!-- Favicon icon -->
+        <link rel="icon" type="image/png" sizes="16x16" href="/static/assets/images/favicon.png">
+        <!-- Bootstrap Core CSS -->
+        <link href="/static/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    
+        <!-- Plugins CSS goes HERE  -->
+        {% block plugin_stylesheets %}{% endblock plugin_stylesheets %}
+    
+        <!-- Custom CSS -->
+        <link href="/static/assets/css/style.css" rel="stylesheet">
+        <!-- You can change the theme colors from here -->
+        <link href="/static/assets/css/colors/blue.css" id="theme" rel="stylesheet">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    
+        <!-- Specific Page CSS goes HERE  -->
+        {% block stylesheets %}{% endblock stylesheets %}
+    
+    </head>
+    <body>
+<!-- {% block title %} Register {% endblock %}  -->
+<!-- {% block content %} -->
 
-{% block title %} Register {% endblock %} 
-
-<!-- Plugins CSS goes HERE  -->
-{% block plugin_stylesheets %}{% endblock plugin_stylesheets %}
-
-<!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
-
-{% block content %}
+{% include 'includes/navigation.html' %}
 
     <div class="container-fluid">
         
@@ -23,13 +59,13 @@
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
                 </ol>
             </div>
-            <div class="col-md-7 col-4 align-self-center">
+            <!-- <div class="col-md-7 col-4 align-self-center">
                 <a target="_blank"
                    href="https://appseed.us"
                     class="btn waves-effect waves-light btn-danger pull-right hidden-sm-down">
                     More Starters
                 </a>
-            </div>
+            </div> -->
         </div>
         <!-- ============================================================== -->
         <!-- End Bread crumb and right sidebar toggle -->
@@ -45,8 +81,7 @@
                 <div class="card">
                     <div class="card-block">
 
-                        <form class="form-horizontal form-material">
-                        
+                        <form method="POST" action="/" form-horizontal form-material>
                             <div class="form-group">
                                 <label class="col-md-12">Username</label>
                                 <div class="col-md-12">
@@ -65,7 +100,7 @@
 
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <button class="btn btn-success">Login</button> &nbsp;&nbsp; Don't have an account? <a href="/register.html">Register</a>
+                                    <button type="submit" class="btn btn-success">Login</button> &nbsp;&nbsp; Don't have an account? <a href="/register.html">Register</a>
                                 </div>
                             </div>
 
@@ -81,6 +116,12 @@
         <!-- ============================================================== -->
     </div>
 
-{% endblock content %}
+<!-- {% endblock content %} -->
+{% include 'includes/footer.html' %}
+
+{% include 'includes/scripts.html' %}
 
 {% block javascripts %}{% endblock javascripts %}
+
+</body>
+</html>
