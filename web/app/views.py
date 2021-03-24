@@ -1,15 +1,17 @@
 # -*- encoding: utf-8 -*-
-# Flask modules
+import sys
+
+sys.path.append('..')
+
 from flask import render_template, request
 from jinja2 import TemplateNotFound
-from ..connect_firebase import connect
-# App modules
+from connect_firebase import connect
+
 from app import app
 
 hosp_coll = connect('hospitals')
 beds_coll = connect('beds')
 
-# App main route + generic routing
 @app.route('/', methods=['POST', 'GET']) #defaults={'path': 'login.html'}
 def home():
     if request.method == 'GET':
@@ -17,8 +19,8 @@ def home():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        
-
+        query_ref = hosp_coll.where(u'Email ID', u'==', u'info@lilavatihospital.com')
+        print(query_ref)
         return render_template('index.html')
 
 @app.route('/<path>')
