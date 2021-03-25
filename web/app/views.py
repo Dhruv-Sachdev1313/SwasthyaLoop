@@ -12,16 +12,18 @@ from app import app
 hosp_coll = connect('hospitals')
 beds_coll = connect('beds')
 
-@app.route('/', methods=['POST', 'GET']) #defaults={'path': 'login.html'}
+@app.route('/', methods=['POST', 'GET'])
 def home():
     if request.method == 'GET':
+        # TODO: check if logged in and redirect to dashboard
         return render_template('login.html')
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        query_ref = hosp_coll.where(u'Email ID', u'==', u'info@lilavatihospital.com')
-        print(query_ref)
-        return render_template('index.html')
+        # TODO: implement auth
+        query_ref = hosp_coll.where(u'Email', u'==', u'{}'.format(email)).stream()
+        hosp_info = next(query_ref).to_dict()
+        return render_template('index.html', hosp_info=hosp_info)
 
 @app.route('/<path>')
 def index(path):
