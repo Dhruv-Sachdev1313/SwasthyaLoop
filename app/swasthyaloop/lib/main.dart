@@ -5,8 +5,7 @@ import 'Homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'search.dart';
 
-// TODO: Get the navigation back to homescreen, 
-// TODO: add static map to search page, 
+// TODO: Get the navigation back to homescreen
 Widget defaultHome;
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

@@ -11,6 +11,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
 
   int _selectedIndex = 0;
+  AssetImage map = AssetImage("assets/map.jpg");
   
 
   void onTapped(int value) {
@@ -37,7 +38,7 @@ class _SearchPageState extends State<SearchPage> {
               ],
             ),
             SizedBox(
-              height: 50.0,
+              height: 10.0,
             ),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -49,6 +50,8 @@ class _SearchPageState extends State<SearchPage> {
                     // _notificationCard(),
                     // _nextAppointmentText(),
                     // _appoinmentCard(),
+
+                    _image(),
                     _areaSpecialistsText(),
                     _specialistsCardInfo(),
                     _specialistsCardInfo(),
@@ -329,6 +332,15 @@ class _SearchPageState extends State<SearchPage> {
           )
         ],
       ),
+    );
+  }
+  Widget _image(){
+    return Container(
+      width: 600.0,
+      child: Image(
+        image: map ,
+        width: 550.0,
+        height: 300.0,)
     );
   }
 } 
