@@ -9,7 +9,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   void onTapped(int value) {
     setState(() {

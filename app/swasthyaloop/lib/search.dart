@@ -9,7 +9,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   AssetImage map = AssetImage("assets/map.jpg");
 
   void onTapped(int value) {
