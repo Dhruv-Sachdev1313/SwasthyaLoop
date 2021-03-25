@@ -1,18 +1,55 @@
 # -*- encoding: utf-8 -*-
-# Flask modules
-from flask import render_template, request
-from jinja2 import TemplateNotFound
+import sys
 
-# App modules
+sys.path.append('..')
+
+from flask import render_template, request, session, url_for
+from jinja2 import TemplateNotFound
+from connect_firebase import connect
+
 from app import app
 
-# App main route + generic routing
-@app.route('/', methods=['POST', 'GET']) #defaults={'path': 'login.html'}
+hosp_coll = connect('hospitals')
+beds_coll = connect('beds')
+
+@app.route('/', methods=['GET'])
 def home():
     if request.method == 'GET':
-        return render_template('login.html')
+        if session.get('email'):
+            hosp_info = session.get('hosp_info')
+            beds = session.get('beds')
+            return render_template('index.html', hosp_info=hosp_info, beds=beds)
+        else:
+            return render_template('login.html')
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
     if request.method == 'POST':
-        return render_template('index.html')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        session['email'] = email
+        # TODO: implement auth
+        query_ref = hosp_coll.where(u'Email', u'==', u'{}'.format(email)).stream()
+        hosp_info = next(query_ref).to_dict()
+        beds = {}
+        query_ref = beds_coll.where(u'Hospital', u'==', u'{}'.format(hosp_info.get('Hname'))).stream()
+        for bed in query_ref:
+            b = bed.to_dict()
+            btype = b.pop('Bed_Type')
+            beds[btype] = b
+        session['hosp_info'] = hosp_info
+        session['beds'] = beds
+        return render_template('index.html', hosp_info=hosp_info, beds=beds)
+    if request.method == 'GET':
+        return render_template('login.html')
+
+@app.route('/logout', methods=['POST', 'GET'])
+def logout():
+    if session.get('email'):
+        session.pop('email')
+        session.pop('hosp_info')
+        # session.pop('beds')
+    return render_template('login.html')
 
 @app.route('/<path>')
 def index(path):
