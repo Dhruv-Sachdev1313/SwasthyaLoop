@@ -17,7 +17,8 @@ def home():
     if request.method == 'GET':
         if session.get('email'):
             hosp_info = session.get('hosp_info')
-            return render_template('index.html', hosp_info=hosp_info)
+            beds = session.get('beds')
+            return render_template('index.html', hosp_info=hosp_info, beds=beds)
         else:
             return render_template('login.html')
 
@@ -30,8 +31,15 @@ def login():
         # TODO: implement auth
         query_ref = hosp_coll.where(u'Email', u'==', u'{}'.format(email)).stream()
         hosp_info = next(query_ref).to_dict()
+        beds = {}
+        query_ref = beds_coll.where(u'Hospital', u'==', u'{}'.format(hosp_info.get('Hname'))).stream()
+        for bed in query_ref:
+            b = bed.to_dict()
+            btype = b.pop('Bed_Type')
+            beds[btype] = b
         session['hosp_info'] = hosp_info
-        return render_template('index.html', hosp_info=hosp_info)
+        session['beds'] = beds
+        return render_template('index.html', hosp_info=hosp_info, beds=beds)
     if request.method == 'GET':
         return render_template('login.html')
 
@@ -40,6 +48,7 @@ def logout():
     if session.get('email'):
         session.pop('email')
         session.pop('hosp_info')
+        # session.pop('beds')
     return render_template('login.html')
 
 @app.route('/<path>')
