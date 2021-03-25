@@ -4,7 +4,8 @@ import 'package:swasthyaloop/Screens/Welcome/welcome_screen.dart';
 import 'package:swasthyaloop/constants.dart';
 import 'Homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'search.dart';
+import 'chat.dart';
 
 Widget defaultHome;
 String username = '';
@@ -21,24 +22,25 @@ void main() async {
     defaultHome = new Homepage();
   }
   runApp(MyApp());
-} 
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Swastyaloop',
-      theme: ThemeData(
-        primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: Colors.white,
-      ),
-      home: defaultHome,
-      routes: <String, WidgetBuilder>{
-        "/home" : (BuildContext context) => Homepage(),
-        "/login" : (BuildContext context) => LoginScreen(),
-      }
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Swastyaloop',
+        theme: ThemeData(
+          primaryColor: kPrimaryColor,
+          scaffoldBackgroundColor: Colors.white,
+        ),
+        home: defaultHome,
+        routes: <String, WidgetBuilder>{
+          "/home": (BuildContext context) => Homepage(),
+          "/login": (BuildContext context) => LoginScreen(),
+          "/search": (BuildContext context) => SearchPage(),
+          "/chat": (BuildContext context) => ChatPage(),
+        });
   }
 }
