@@ -48,7 +48,7 @@ def logout():
     if session.get('email'):
         session.pop('email')
         session.pop('hosp_info')
-        # session.pop('beds')
+        session.pop('beds')
     return render_template('login.html')
 
 @app.route('/<path>')
