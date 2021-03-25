@@ -3,6 +3,7 @@ import 'package:swasthyaloop/Screens/Welcome/welcome_screen.dart';
 import 'package:swasthyaloop/constants.dart';
 import 'Homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'search.dart';
 
 
 Widget defaultHome;
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
       home: defaultHome,
       routes: <String, WidgetBuilder>{
         "/home" : (BuildContext context) => Homepage(),
+        "/search" : (BuildContext context) => SearchPage(),
       }
     );
   }

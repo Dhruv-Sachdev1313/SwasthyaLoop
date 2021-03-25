@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:swasthyaloop/utisl.dart';
 import 'package:swasthyaloop/widgets/moods.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'search.dart';
 
 
 class Homepage extends StatefulWidget {
@@ -24,6 +25,13 @@ class _HomepageState extends State<Homepage> {
     setState(() {
       _selectedIndex = value;
     });
+    if(_selectedIndex==1){
+      Navigator.of(context).pushReplacementNamed('/search');
+    }
+    else{
+      Navigator.of(context).pushReplacementNamed('/home');
+    }
+    // Navigator.of(context).pushReplacementNamed('/search');
   }
 
   _nameRetriever() async {
@@ -96,8 +104,9 @@ class _HomepageState extends State<Homepage> {
           BottomNavigationBarItem(
               icon: Icon(
                 LineAwesomeIcons.search,
-                size: 30.0,
+                size: 30.0,  
               ),
+
               title: Text('2')),
           BottomNavigationBarItem(
               icon: Icon(
