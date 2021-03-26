@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swasthyaloop/utils.dart';
-import 'package:swasthyaloop/widgets/moods.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-
+import 'models/chat_models.dart';
 class ChatPage extends StatefulWidget {
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -40,16 +39,17 @@ class _ChatPageState extends State<ChatPage> {
                 _greetings(),
               ],
             ),
-            SizedBox(
-              height: 10.0,
-            ),
+            // SizedBox(
+            //   height: 10.0,
+            // ),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Padding(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.fromLTRB(10.0,0.0,10.0,0.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
+                    _chats(),
                     // _notificationCard(),
                     // _nextAppointmentText(),
                     // _appoinmentCard(),
@@ -92,7 +92,7 @@ class _ChatPageState extends State<ChatPage> {
 
   Container _backBgCover() {
     return Container(
-      height: 260.0,
+      height: 110.0,
       decoration: BoxDecoration(
         gradient: purpleGradient,
         borderRadius: BorderRadius.only(
@@ -129,11 +129,101 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ],
           ),
-          SizedBox(
-            height: 10,
-          ),
+          // SizedBox(
+          //   height: 10,
+          // ),
         ],
       ),
     );
   }
+  Widget _chats(){
+    return Container(
+      height: 700,
+      // width: 1000,
+      child: ListView.builder(
+      itemCount: messageData.length,
+      itemBuilder: (context, i) => 
+      Column(
+        children: <Widget>[
+          Divider(
+            height: 10.0,
+          ),
+          ListTile(
+            leading: CircleAvatar(
+              maxRadius: 25,
+              backgroundImage: NetworkImage(messageData[i].imageUrl),
+            ),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(messageData[i].name,
+                style: TextStyle(fontWeight: FontWeight.bold)
+                ),
+                Text(messageData[i].time,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16.0
+                )
+                )
+              ],
+            ),
+            subtitle: Container(
+              padding: EdgeInsets.only(top: 5.0),
+              child: Text(
+                messageData[i].message,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 15.0,
+                )
+              ),
+            ),
+            onTap: () {}
+          )
+        ],
+      ),
+    ),
+    );
+    // ListView.builder(
+    //   itemCount: messageData.length,
+    //   itemBuilder: (context, i) => 
+    //   Column(
+    //     children: <Widget>[
+    //       Divider(
+    //         height: 20.0,
+    //       ),
+    //       ListTile(
+    //         leading: CircleAvatar(
+    //           maxRadius: 25,
+    //           backgroundImage: NetworkImage(messageData[i].imageUrl),
+    //         ),
+    //         title: Row(
+    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //           children: <Widget>[
+    //             Text(messageData[i].name,
+    //             style: TextStyle(fontWeight: FontWeight.bold)
+    //             ),
+    //             Text(messageData[i].time,
+    //             style: TextStyle(
+    //               color: Colors.grey,
+    //               fontSize: 16.0
+    //             )
+    //             )
+    //           ],
+    //         ),
+    //         subtitle: Container(
+    //           padding: EdgeInsets.only(top: 5.0),
+    //           child: Text(
+    //             messageData[i].message,
+    //             style: TextStyle(
+    //               color: Colors.grey,
+    //               fontSize: 15.0,
+    //             )
+    //           ),
+    //         ),
+    //         onTap: () {}
+    //       )
+    //     ],
+    //   ),
+    // );
+  } 
 }
