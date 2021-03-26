@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swasthyaloop/utils.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'models/chat_models.dart';
+
 class ChatPage extends StatefulWidget {
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -26,6 +27,26 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.person, //logo will go here
+            color: Colors.black,
+          ),
+          onPressed: () {
+            // Go to profile page
+            Navigator.of(context).pushReplacementNamed('/profile');
+          },
+        ),
+        title: new Text(
+          'Swastyaloop',
+          style: new TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      ),
       backgroundColor: mainBgColor,
       body: SingleChildScrollView(
         child: Column(
@@ -39,24 +60,20 @@ class _ChatPageState extends State<ChatPage> {
                 _greetings(),
               ],
             ),
-            // SizedBox(
-            //   height: 10.0,
-            // ),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(10.0,0.0,10.0,0.0),
+                padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     _chats(),
-                    // _notificationCard(),
-                    // _nextAppointmentText(),
-                    // _appoinmentCard(),
-                    //_specialistsCardInfo(),
                   ],
                 ),
               ),
+            ),
+            SizedBox(
+              height: 10.0,
             ),
           ],
         ),
@@ -92,7 +109,7 @@ class _ChatPageState extends State<ChatPage> {
 
   Container _backBgCover() {
     return Container(
-      height: 110.0,
+      height: 160.0,
       decoration: BoxDecoration(
         gradient: purpleGradient,
         borderRadius: BorderRadius.only(
@@ -136,56 +153,49 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
-  Widget _chats(){
+
+  Widget _chats() {
     return Container(
-      height: 700,
-      // width: 1000,
+      height: 75.0 * (messageData.length + 1),
       child: ListView.builder(
-      itemCount: messageData.length,
-      itemBuilder: (context, i) => 
-      Column(
-        children: <Widget>[
-          Divider(
-            height: 10.0,
-          ),
-          ListTile(
-            leading: CircleAvatar(
-              maxRadius: 25,
-              backgroundImage: NetworkImage(messageData[i].imageUrl),
+        // confirm with Dhruv
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: messageData.length,
+        itemBuilder: (context, i) => Column(
+          children: <Widget>[
+            Divider(
+              height: 10.0,
             ),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(messageData[i].name,
-                style: TextStyle(fontWeight: FontWeight.bold)
+            ListTile(
+                leading: CircleAvatar(
+                  maxRadius: 25,
+                  backgroundImage: NetworkImage(messageData[i].imageUrl),
                 ),
-                Text(messageData[i].time,
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16.0
-                )
-                )
-              ],
-            ),
-            subtitle: Container(
-              padding: EdgeInsets.only(top: 5.0),
-              child: Text(
-                messageData[i].message,
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 15.0,
-                )
-              ),
-            ),
-            onTap: () {}
-          )
-        ],
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(messageData[i].name,
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(messageData[i].time,
+                        style: TextStyle(color: Colors.grey, fontSize: 16.0))
+                  ],
+                ),
+                subtitle: Container(
+                  padding: EdgeInsets.only(top: 5.0),
+                  child: Text(messageData[i].message,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 15.0,
+                      )),
+                ),
+                onTap: () {})
+          ],
+        ),
       ),
-    ),
     );
     // ListView.builder(
     //   itemCount: messageData.length,
-    //   itemBuilder: (context, i) => 
+    //   itemBuilder: (context, i) =>
     //   Column(
     //     children: <Widget>[
     //       Divider(
@@ -225,5 +235,5 @@ class _ChatPageState extends State<ChatPage> {
     //     ],
     //   ),
     // );
-  } 
+  }
 }
