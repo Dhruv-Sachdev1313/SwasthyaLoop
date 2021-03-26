@@ -5,12 +5,8 @@
 
 <!-- Plugins CSS goes HERE  -->
 {% block plugin_stylesheets %}
-
-    <!-- chartist CSS -->
-    <link href="/static/assets/plugins/chartist-js/dist/chartist.min.css" rel="stylesheet">
-    <link href="/static/assets/plugins/chartist-js/dist/chartist-init.css" rel="stylesheet">
-    <link href="/static/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css" rel="stylesheet">
-    <!--This page css - Morris CSS -->
+    <!-- chart.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.css" integrity="sha512-C7hOmCgGzihKXzyPU/z4nv97W0d9bv4ALuuEbSf6hm93myico9qa0hv4dODThvCsqQUmKmLcJmlpRmCaApr83g==" crossorigin="anonymous" />
     <link href="/static/assets/plugins/c3-master/c3.min.css" rel="stylesheet">
 
 {% endblock plugin_stylesheets %}
@@ -32,13 +28,6 @@
                     <li class="breadcrumb-item active">Dashboard</li>
                 </ol>
             </div>
-            <!-- <div class="col-md-7 col-4 align-self-center">
-                <a target="_blank"
-                   href="https://appseed.us"
-                    class="btn waves-effect waves-light btn-danger pull-right hidden-sm-down">
-                    More Starters
-                </a>
-            </div> -->
         </div>
         <!-- ============================================================== -->
         <!-- End Bread crumb and right sidebar toggle -->
@@ -53,18 +42,17 @@
             <div class="col-lg-4 col-xlg-3 col-md-5">
                 <!-- Column -->
                 <div class="card">
-                    <img class="card-img-top" src="/static/assets/images/background/profile-bg.jpg"
-                        alt="Card image cap">
                     <div class="card-block little-profile text-center">
-                        <div class="pro-img"><img src="/static/assets/images/users/4.jpg" alt="user" /></div>
+                        <!-- <div class="pro-img"><img src="/static/assets/images/users/4.jpg" alt="user" /></div> -->
                         {%for key, value in beds.items()%}
-                            <h3 class="m-b-0">{{key}}</h3>
-                            <p>{{value['Available']}}</p>
+                        <canvas class="drawMe" id="{{key}}" data-available="{{value['Available']}}" data-capacity="{{value['Bed_Count']}}" width="400" height="200"></canvas>
+                        <h3 class="m-b-0">{{key}}</h3>
+                        <p>{{value['Available']}}</p>
+                        <hr>
                         {%endfor%}
-                        
-                        <a href="javascript:void(0)"
-                            class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded">Follow</a>
-                        <div class="row text-center m-t-20">
+                        <!-- <a href="javascript:void(0)"
+                            class="m-t-10 waves-effect waves-dark btn btn-primary btn-md btn-rounded">Follow</a> -->
+                        <!-- <div class="row text-center m-t-20">
                             <div class="col-lg-4 col-md-4 m-t-20">
                                 <h3 class="m-b-0 font-light">1099</h3><small>Articles</small>
                             </div>
@@ -74,7 +62,7 @@
                             <div class="col-lg-4 col-md-4 m-t-20">
                                 <h3 class="m-b-0 font-light">6035</h3><small>Following</small>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <!-- Column -->
@@ -304,7 +292,6 @@
                                              <button type="button" class="btn btn-danger ml-3">Reject</button>
                                             </td>
                                         </tr>
-                                           
                                         </table>
                                     </div>
                                 </div>
@@ -320,14 +307,60 @@
 {% endblock content %}
 
 {% block javascripts %}
-
+    <!-- chart.js  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js" integrity="sha512-hZf9Qhp3rlDJBvAKvmiG+goaaKRZA6LKUO35oK6EsM0/kjPK32Yw7URqrq3Q+Nvbbt8Usss+IekL7CRn83dYmw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js" integrity="sha512-zO8oeHCxetPn1Hd9PdDleg5Tw1bAaP0YmNvPY8CwcRyUk7d7/+nyElmFrB6f7vg4f7Fv4sui1mcep8RIEShczg==" crossorigin="anonymous"></script>
     <!-- chartist chart -->
-    <script src="/static/assets/plugins/chartist-js/dist/chartist.min.js"></script>
-    <script src="/static/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js"></script>
+    <!-- <script src="/static/assets/plugins/chartist-js/dist/chartist.min.js"></script> -->
+     <!-- <script src="/static/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js"></script> -->
     <!--c3 JavaScript -->
     <script src="/static/assets/plugins/d3/d3.min.js"></script>
     <script src="/static/assets/plugins/c3-master/c3.min.js"></script>
-    <!-- Chart JS -->
-    <script src="/static/assets/js/dashboard1.js"></script>
+
+    <script>
+        var options = {
+            circumference: Math.PI,
+            rotation: Math.PI,
+            animation: {
+                animateScale: true
+            }
+        };
+        function drawPieGraph(cid, avail_beds, total_beds){
+            avail_beds = parseInt(avail_beds);
+            total_beds = parseInt(total_beds);
+            var data = [total_beds-avail_beds, avail_beds];
+            var ctx = document.getElementById(cid);
+            var data = {
+            datasets: [{
+                data: data,
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)'
+                ],
+            }],
+            labels: [
+                'Occupied',
+                'Available'
+            ]
+        };
+            var myDoughnutChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: data,
+                options: options
+        });
+        }
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+            let canvases = document.getElementsByClassName("drawMe");
+            for(var i = 0; i < canvases.length; i++){
+                let c = canvases[i];
+                var avail_beds = c.getAttribute("data-available");
+                var total_beds = c.getAttribute("data-capacity");
+                var bed_type = c.getAttribute("id");
+                drawPieGraph(bed_type, avail_beds, total_beds);
+            }
+        });
+
+    </script>
 
 {% endblock javascripts %}

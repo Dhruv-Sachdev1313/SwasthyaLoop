@@ -16,8 +16,8 @@ beds_coll = connect('beds')
 def home():
     if request.method == 'GET':
         if session.get('email'):
-            hosp_info = session.get('hosp_info')
-            beds = session.get('beds')
+            hosp_info = session.get('hosp_info', {})
+            beds = session.get('beds', {})
             return render_template('index.html', hosp_info=hosp_info, beds=beds)
         else:
             return render_template('login.html')
@@ -46,9 +46,9 @@ def login():
 @app.route('/logout', methods=['POST', 'GET'])
 def logout():
     if session.get('email'):
-        session.pop('email')
-        session.pop('hosp_info')
-        session.pop('beds')
+        session.pop('email',None)
+        session.pop('hosp_info', None)
+        session.pop('beds', None)
     return render_template('login.html')
 
 @app.route('/<path>')
