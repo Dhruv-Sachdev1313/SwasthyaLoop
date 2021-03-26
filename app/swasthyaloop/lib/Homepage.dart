@@ -8,6 +8,7 @@ import 'package:swasthyaloop/utils.dart';
 import 'package:swasthyaloop/widgets/moods.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'search.dart';
+import 'auth.dart';
 
 class Homepage extends StatefulWidget {
   Homepage({Key key, this.title}) : super(key: key);
@@ -24,13 +25,11 @@ class _HomepageState extends State<Homepage> {
     setState(() {
       _selectedIndex = value;
     });
-    if(_selectedIndex==1){
+    if (_selectedIndex == 1) {
       Navigator.of(context).pushReplacementNamed('/search');
-    }
-    else if (_selectedIndex == 0) {
+    } else if (_selectedIndex == 0) {
       Navigator.of(context).pushReplacementNamed('/home');
-    }
-    else {
+    } else {
       Navigator.of(context).pushReplacementNamed('/chat');
     }
     // Navigator.of(context).pushReplacementNamed('/search');
@@ -39,6 +38,26 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.person, //logo will go here
+            color: Colors.black,
+          ),
+          onPressed: () {
+            // Go to profile page
+            Navigator.of(context).pushReplacementNamed('/profile');
+          },
+        ),
+        title: new Text(
+          'Swastyaloop',
+          style: new TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      ),
       backgroundColor: mainBgColor,
       body: SingleChildScrollView(
         child: Column(
@@ -70,32 +89,6 @@ class _HomepageState extends State<Homepage> {
                     _specialistsCardInfo(),
                     _specialistsCardInfo(),
                     _specialistsCardInfo(),
-                    // todo: remove this container
-                    Container(
-                       padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                       child: Material(
-                       color: Colors.white30,
-                         child: GestureDetector(
-                           onTap: () async {
-                             SharedPreferences pref = await SharedPreferences.getInstance();
-                             pref.setBool('isLogged', false);
-                             pref.setString('username', '');
-                             Navigator.of(context).pushReplacementNamed('/login');
-                           },
-                           child: Align(
-                             alignment: Alignment.centerLeft,
-                             child: Text(
-                                 'Log out',
-                                 style: TextStyle(
-                                 color: Colors.blueGrey,
-                                 fontSize: 20.0,
-                                 fontFamily: 'Montserrat'
-                                 )
-                             )
-                           )
-                         )
-                       )
-                    )
                     //_specialistsCardInfo(),
                   ],
                 ),
@@ -118,9 +111,8 @@ class _HomepageState extends State<Homepage> {
           BottomNavigationBarItem(
               icon: Icon(
                 LineAwesomeIcons.search,
-                size: 30.0,  
+                size: 30.0,
               ),
-
               title: Text('2')),
           BottomNavigationBarItem(
               icon: Icon(
@@ -178,7 +170,7 @@ class _HomepageState extends State<Homepage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Hi ${loginBody.username}',
+            'Hi ${main.user["fname"]}',
             style: TextStyle(
               fontSize: 36,
               fontWeight: FontWeight.w500,

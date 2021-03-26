@@ -6,13 +6,17 @@ import 'Homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'search.dart';
 import 'chat.dart';
+import 'auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'profile.dart';
 
 Widget defaultHome;
 String username = '';
+var user = {};
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Firebase.initializeApp();
   SharedPreferences pref = await SharedPreferences.getInstance();
   bool isLogged = pref.getBool('isLogged') ?? false;
   username = pref.getString('username') ?? '';
@@ -41,6 +45,7 @@ class MyApp extends StatelessWidget {
           "/login": (BuildContext context) => LoginScreen(),
           "/search": (BuildContext context) => SearchPage(),
           "/chat": (BuildContext context) => ChatPage(),
+          "/profile": (BuildContext context) => ProfilePage(),
         });
   }
 }
