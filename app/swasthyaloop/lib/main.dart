@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swasthyaloop/Screens/Login/login_screen.dart';
 import 'package:swasthyaloop/Screens/Welcome/welcome_screen.dart';
 import 'package:swasthyaloop/constants.dart';
+import 'package:swasthyaloop/hospital_profile.dart';
 import 'Homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'search.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
           "/login": (BuildContext context) => LoginScreen(),
           "/search": (BuildContext context) => SearchPage(),
           "/chat": (BuildContext context) => ChatPage(),
+          "/hprofile": (BuildContext context) => HospitalProfilePage(),
         });
   }
 }
