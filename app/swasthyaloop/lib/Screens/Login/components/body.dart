@@ -7,9 +7,12 @@ import 'package:swasthyaloop/components/rounded_input_field.dart';
 import 'package:swasthyaloop/components/rounded_password_field.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:swasthyaloop/auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 String username = '';
+String password = '';
+
 class Body extends StatelessWidget {
   const Body({
     Key key,
@@ -40,16 +43,26 @@ class Body extends StatelessWidget {
               },
             ),
             RoundedPasswordField(
-              onChanged: (value) {},
+              onChanged: (value) {
+                password = value;
+              },
             ),
             RoundedButton(
               text: "LOGIN",
               press: () async {
-                SharedPreferences pref = await SharedPreferences.getInstance();
-                pref.setBool("isLogged", true);
-                print(username);
-                pref.setString("username", username);
-                Navigator.of(context).pushReplacementNamed('/home');
+                AuthService auth = new AuthService();
+                if (await auth.login(username, password)) {
+                  Navigator.of(context).pushReplacementNamed('/home');
+                } else {
+                  Fluttertoast.showToast(
+                      msg: "Invalid Credentials",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                }
               },
             ),
             SizedBox(height: size.height * 0.03),

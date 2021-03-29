@@ -28,6 +28,26 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.person, //logo will go here
+            color: Colors.black,
+          ),
+          onPressed: () {
+            // Go to profile page
+            Navigator.of(context).pushReplacementNamed('/profile');
+          },
+        ),
+        title: new Text(
+          'Swastyaloop',
+          style: new TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      ),
       backgroundColor: mainBgColor,
       body: SingleChildScrollView(
         child: Column(
@@ -189,7 +209,9 @@ class _SearchPageState extends State<SearchPage> {
                     height: 6.0,
                   ),
                   RaisedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacementNamed('/hprofile');
+                    },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(80.0)),
                     padding: const EdgeInsets.all(0.0),
