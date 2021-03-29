@@ -129,6 +129,7 @@
                         <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#settings"
                                 role="tab">Waitlisted Requests</a> </li>
                     </ul>
+
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div class="tab-pane active" id="home" role="tabpanel">
@@ -137,51 +138,61 @@
                                     <div class="sl-item">
                                         <table class="table table-hover">
                                            <th>
-                                               <!-- <td>id</td> -->
                                                <td>Username</td>
-                                               <td>Beds Requested</td>
+                                               <td>Bed Type</td>
+                                               <td>Num</td>
                                                <td>Action</td>
                                            </th>
+                                           {%for k, v in req_data.items()%}
+                                           {%if v.get('status')=='Requested'%}
                                            <tr>
-                                               <td>1</td>
-                                               <td>
-                                                  Harshita Kanal
-                                               </td>
-                                               <td style = "text-align:center;">
-                                                   1
-                                               </td>
-                                               <td>
-                                                <button type="button" class="btn btn-info">Accept</button>
-                                                <button type="button" class="btn btn-info ml-3">Waitlist</button>
-                                               </td>
+                                            <td>{{k}}</td>
+                                            <td>{{v.get('user')}}</td>
+                                            <td>{{v.get('type')}}</td>
+                                            <td>{{v.get('num_of_beds')}}</td>
+                                            <td>
+                                                <button type="button" data-toggle="modal" data-target="#{{k}}" class="btn btn-info">Accept</button>
+                                                     <!-- Modal -->
+                                                    <div class="modal fade" id="{{k}}" role="dialog">
+                                                        <div class="modal-dialog">
+                                                    
+                                                        <!-- Modal content-->
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                <h4 class="modal-title">Accept request of {{v.get('user')}}</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="{{ url_for('accept') }}" method="POST">
+                                                                    <div class="form-group">
+                                                                    <label for="user">User</label>
+                                                                    <input type="text" name="user" value="{{v.get('user')}}" readonly>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                    <label for="num_of_beds">No.</label>&nbsp;&nbsp;
+                                                                    <input type="number" name="num_of_beds" value="{{v.get('num_of_beds')}}">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                    <label for="type">Type</label>
+                                                                    <input type="text" name="type" value="{{v.get('type')}}">
+                                                                    </div>
+                                                                    <input type="text" name="reqid" value="{{k}}" style="display: none;">
+                                                                    <button type="submit" class="btn btn-info">Submit</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                        </div>
+                                                        <span>
+                                                        <form action="{{url_for('waitlist')}}" method="post">
+                                                            <input type="text" name="reqid" value="{{k}}" style="display: none;">
+                                                            <button type="submit" class="btn btn-info ml-3">Waitlist</button>
+                                                        </form>
+                                                        </span>
+                                            </td>
                                            </tr>
-                                           <tr>
-                                            <td>2</td>
-                                            <td>
-                                              John doe
-                                            </td>
-                                            <td style = "text-align:center;">
-                                                2
-                                            </td>
-                                            <td>
-                                             <button type="button" class="btn btn-info">Accept</button>
-                                             <button type="button" class="btn btn-info ml-3">Waitlist</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>
-                                               Loren Ipsum
-                                            </td>
-                                            <td style = "text-align:center;">
-                                                1
-                                            </td>
-                                            <td>
-                                             <button type="button" class="btn btn-info">Accept</button>
-                                             <button type="button" class="btn btn-info ml-3">Waitlist</button>
-                                            </td>
-                                        </tr>
-                                           
+                                           {%endif%}
+                                           {%endfor%}
                                         </table>
                                     </div>
                                 </div>
@@ -195,47 +206,24 @@
                                     <div class="sl-item">
                                         <table class="table table-hover">
                                            <th>
-                                               <!-- <td>id</td> -->
-                                               <td>Username</td>   
+                                               <td>Username</td>
+                                               <td>Bed Type</td>
                                                <td>Beds Allotted</td>
                                                <td>Action</td>
                                            </th>
+                                           {%for k, v in req_data.items()%}
+                                           {%if v.get('status')=='Allotted'%}
                                            <tr>
-                                               <td>1</td>
-                                               <td>
-                                                  Harshita Kanal
-                                               </td>
-                                               <td style = "text-align:center;">
-                                                   1
-                                               </td>
-                                               <td>
+                                            <td>{{k}}</td>
+                                            <td>{{v.get('user')}}</td>
+                                            <td>{{v.get('type')}}</td>
+                                            <td>{{v.get('num_of_beds')}}</td>
+                                            <td>
                                                 <button type="button" class="btn btn-info">View</button>   
-                                               </td>
+                                            </td>
                                            </tr>
-                                           <tr>
-                                            <td>2</td>
-                                            <td>
-                                              John doe
-                                            </td>
-                                            <td style = "text-align:center;">
-                                                2
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-info">View</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>
-                                               Loren Ipsum
-                                            </td>
-                                            <td style = "text-align:center;">
-                                                1
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-info">View</button>
-                                            </td>
-                                        </tr> 
+                                           {%endif%}
+                                           {%endfor%} 
                                         </table>
                                     </div>
                                 </div> 
@@ -250,48 +238,29 @@
                                            <th>
                                                <!-- <td>id</td> -->
                                                <td>Username</td>
+                                               <td>Bed Type</td>
                                                <td>Beds Requested</td>
                                                <td>Action</td>
                                            </th>
+                                           {%for k, v in req_data.items()%}
+                                           {%if v.get('status')=='Waitlisted'%}
                                            <tr>
-                                               <td>1</td>
-                                               <td>
-                                                  Harshita Kanal
-                                               </td>
-                                               <td style = "text-align:center;">
-                                                   1
-                                               </td>
-                                               <td>
+                                            <td>{{k}}</td>
+                                            <td>{{v.get('user')}}</td>
+                                            <td>{{v.get('type')}}</td>
+                                            <td>{{v.get('num_of_beds')}}</td>
+                                            <td>
                                                 <button type="button" class="btn btn-info">Accept</button>
-                                                <button type="button" class="btn btn-danger ml-3">Reject</button>
+                                                <span>
+                                                    <form action="{{url_for('reject')}}" method="post">
+                                                        <input type="text" name="reqid" value="{{k}}" style="display: none;">
+                                                        <button type="submit" class="btn btn-info ml-3">Reject</button>
+                                                    </form>
+                                                </span>
                                                </td>
                                            </tr>
-                                           <tr>
-                                            <td>2</td>
-                                            <td>
-                                              John doe
-                                            </td>
-                                            <td style = "text-align:center;">
-                                                2
-                                            </td>
-                                            <td>
-                                             <button type="button" class="btn btn-info">Accept</button>
-                                             <button type="button" class="btn btn-danger ml-3">Reject</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>
-                                               Loren Ipsum
-                                            </td>
-                                            <td style = "text-align:center;">
-                                                1
-                                            </td>
-                                            <td>
-                                             <button type="button" class="btn btn-info">Accept</button>
-                                             <button type="button" class="btn btn-danger ml-3">Reject</button>
-                                            </td>
-                                        </tr>
+                                           {%endif%}
+                                           {%endfor%} 
                                         </table>
                                     </div>
                                 </div>
@@ -307,12 +276,11 @@
 {% endblock content %}
 
 {% block javascripts %}
+
     <!-- chart.js  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js" integrity="sha512-hZf9Qhp3rlDJBvAKvmiG+goaaKRZA6LKUO35oK6EsM0/kjPK32Yw7URqrq3Q+Nvbbt8Usss+IekL7CRn83dYmw==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js" integrity="sha512-zO8oeHCxetPn1Hd9PdDleg5Tw1bAaP0YmNvPY8CwcRyUk7d7/+nyElmFrB6f7vg4f7Fv4sui1mcep8RIEShczg==" crossorigin="anonymous"></script>
-    <!-- chartist chart -->
-    <!-- <script src="/static/assets/plugins/chartist-js/dist/chartist.min.js"></script> -->
-     <!-- <script src="/static/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js"></script> -->
+ 
     <!--c3 JavaScript -->
     <script src="/static/assets/plugins/d3/d3.min.js"></script>
     <script src="/static/assets/plugins/c3-master/c3.min.js"></script>
