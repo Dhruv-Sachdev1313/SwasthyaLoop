@@ -6,7 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:swasthyaloop/Screens/Login/components/body.dart';
-import 'main.dart' as main;
+import 'main.dart';
 
 class AuthService {
   Future<bool> login(String username, String pass) async {
@@ -20,14 +20,14 @@ class AuthService {
       print("Invalid Credentials");
       return false;
     } else {
-      main.user = docs.docs[0].data();
+      user = docs.docs[0].data();
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setBool("isLogged", true);
-      pref.setString("username", main.user['username']);
-      pref.setString("fanme", main.user['fname']);
-      pref.setString("lanme", main.user['lname']);
-      pref.setInt("age", main.user['age']);
-      pref.setString("gender", main.user['gender']);
+      pref.setString("username", user['username']);
+      pref.setString("fname", user['fname']);
+      pref.setString("lname", user['lname']);
+      pref.setInt("age", user['age']);
+      pref.setString("gender", user['gender']);
 
       return true;
     }
@@ -35,10 +35,13 @@ class AuthService {
 
   // Logout
   Future<void> logout() async {
-    // Simulate a future for response after 1 second.
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setBool('isLogged', false);
     pref.setString('username', '');
+    pref.setString("fname", '');
+    pref.setString("lname", '');
+    pref.setInt("age", 0);
+    pref.setString("gender", '');
     return;
   }
 }

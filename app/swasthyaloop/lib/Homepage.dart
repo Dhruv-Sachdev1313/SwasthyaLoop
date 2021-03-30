@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
-import 'main.dart' as main;
+import 'main.dart';
 import 'Screens/Login/components/body.dart' as loginBody;
 import 'package:swasthyaloop/utils.dart';
 import 'package:swasthyaloop/widgets/moods.dart';
@@ -191,7 +191,7 @@ class _HomepageState extends State<Homepage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Hi ${main.user["fname"]}',
+            'Hi ${user["fname"]}',
             style: TextStyle(
               fontSize: 36,
               fontWeight: FontWeight.w500,

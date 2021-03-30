@@ -168,9 +168,9 @@ class _ChatPageState extends State<ChatPage> {
             ),
             ListTile(
                 leading: CircleAvatar(
-                  maxRadius: 25,
-                  backgroundImage: NetworkImage(messageData[i].imageUrl),
-                ),
+                    maxRadius: 25,
+                    backgroundImage: NetworkImage(messageData[i].imageUrl),
+                    backgroundColor: Colors.pink.shade50),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[

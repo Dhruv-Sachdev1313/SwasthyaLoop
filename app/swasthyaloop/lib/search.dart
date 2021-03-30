@@ -4,6 +4,8 @@ import 'package:swasthyaloop/widgets/moods.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:number_inc_dec/number_inc_dec.dart';
+import 'main.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -15,6 +17,8 @@ class _SearchPageState extends State<SearchPage> {
   final firestoreInstance = FirebaseFirestore.instance;
   int _selectedIndex = 1;
   AssetImage map = AssetImage("assets/map.jpg");
+  String _bedType;
+  num _bedCount;
 
   @override
   void initState() {
@@ -283,7 +287,12 @@ class _SearchPageState extends State<SearchPage> {
                         width: 15.0,
                       ),
                       RaisedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  _buildPopupDialog(context));
+                        },
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(80.0)),
                         padding: const EdgeInsets.all(0.0),
@@ -454,5 +463,113 @@ class _SearchPageState extends State<SearchPage> {
           width: 550.0,
           height: 300.0,
         ));
+  }
+
+  Widget _buildPopupDialog(BuildContext context) {
+    return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+      return new AlertDialog(
+        title: const Text('Request Bed'),
+        content: new Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              children: [
+                DropdownButton<String>(
+                  value: _bedType,
+                  focusColor: Colors.white,
+                  // elevation: 5,
+                  style: TextStyle(color: Colors.white),
+                  iconEnabledColor: Colors.black,
+                  onChanged: (String value) {
+                    _bedType = value;
+                    setState(() {
+                      _bedType = value;
+                    });
+                  },
+                  hint: Text(
+                    "Select Bed Type",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
+                  ),
+                  items: <String>['Isolation', 'ICU', 'General', 'Delux']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 25.0,
+            ),
+            Row(
+              children: [
+                Text("Number of Beds:"),
+                SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  width: 70,
+                  height: 55,
+                  child: NumberInputWithIncrementDecrement(
+                    controller: TextEditingController(),
+                    onIncrement: (num value) {
+                      _bedCount = value;
+                    },
+                    onDecrement: (num value) {
+                      _bedCount = value;
+                    },
+                  ),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 15.0,
+            ),
+            RaisedButton(
+              onPressed: () {
+                print(_bedCount);
+                print(_bedType);
+                firestoreInstance.collection("bed_requests").add({
+                  "hid": "WXoBQ6WgZyuMgKZ5NFmU",
+                  "num_of_beds": _bedCount,
+                  "status": "Requested",
+                  "user": user['username'],
+                  "type": _bedType
+                }).then((value) {
+                  print(value.id);
+                });
+              },
+              color: midColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(80.0),
+              ),
+              child: Text(
+                'Book',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          new FlatButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            textColor: Theme.of(context).primaryColor,
+            child: const Text('Close'),
+          ),
+        ],
+      );
+    });
   }
 }
