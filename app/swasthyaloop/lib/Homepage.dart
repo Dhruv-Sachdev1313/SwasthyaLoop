@@ -32,7 +32,6 @@ class _HomepageState extends State<Homepage> {
     } else {
       Navigator.of(context).pushReplacementNamed('/chat');
     }
-    // Navigator.of(context).pushReplacementNamed('/search');
   }
 
   @override
@@ -94,6 +93,28 @@ class _HomepageState extends State<Homepage> {
                 ),
               ),
             ),
+            Container(
+                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                child: Material(
+                  color: Colors.white30,
+                  child: GestureDetector(
+                    onTap: () {
+                      AuthService appAuth = new AuthService();
+                      appAuth.logout().then((_) =>
+                          Navigator.of(context).pushReplacementNamed('/login'));
+                    },
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Log out',
+                        style: TextStyle(
+                            color: Colors.redAccent,
+                            fontSize: 20.0,
+                            fontFamily: 'Montserrat'),
+                      ),
+                    ),
+                  ),
+                ))
           ],
         ),
       ),
@@ -331,40 +352,27 @@ class _HomepageState extends State<Homepage> {
         // gradient: redGradient,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: ListTile(
+      child: new Center(
+          child: ListTile(
         leading: Icon(
-          LineAwesomeIcons.calendar_check_o,
+          LineAwesomeIcons.empire,
           color: Colors.white,
           size: 32,
         ),
-        title: Text(
-          'Your Visit with \nDr Kyecera',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
+        title: new Center(
+          child: Text('EMERGENCY',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              )),
         ),
-        trailing: OutlineButton(
-          onPressed: () {},
-          color: Colors.transparent,
-          borderSide: BorderSide(
-            color: Colors.white,
-            width: 1.0,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(26),
-          ),
-          child: Text(
-            'Review & Add Notes',
-            style: TextStyle(
-              fontWeight: FontWeight.w300,
-              fontSize: 12,
-              color: Colors.white,
-            ),
-          ),
+        trailing: Icon(
+          LineAwesomeIcons.empire,
+          color: Colors.white,
+          size: 32,
         ),
-      ),
+      )),
     );
   }
 

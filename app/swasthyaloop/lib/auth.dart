@@ -9,7 +9,6 @@ import 'package:swasthyaloop/Screens/Login/components/body.dart';
 import 'main.dart' as main;
 
 class AuthService {
-  
   Future<bool> login(String username, String pass) async {
     CollectionReference patients =
         FirebaseFirestore.instance.collection('patients');
@@ -25,6 +24,11 @@ class AuthService {
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setBool("isLogged", true);
       pref.setString("username", main.user['username']);
+      pref.setString("fanme", main.user['fname']);
+      pref.setString("lanme", main.user['lname']);
+      pref.setInt("age", main.user['age']);
+      pref.setString("gender", main.user['gender']);
+
       return true;
     }
   }

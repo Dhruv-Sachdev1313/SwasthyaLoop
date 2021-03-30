@@ -25,6 +25,13 @@ void main() async {
   defaultHome = new WelcomeScreen();
   if (isLogged) {
     defaultHome = new Homepage();
+    user = {
+      'fname': pref.getString('fname'),
+      'lname': pref.getString('lname'),
+      'username': pref.getString('username'),
+      'gender': pref.getString('gender'),
+      'age': pref.getInt('age')
+    };
   }
   runApp(MyApp());
 }

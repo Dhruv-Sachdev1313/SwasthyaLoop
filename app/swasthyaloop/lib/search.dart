@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:swasthyaloop/utils.dart';
 import 'package:swasthyaloop/widgets/moods.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -9,8 +11,17 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  List<Widget> hospitalList = [];
+  final firestoreInstance = FirebaseFirestore.instance;
   int _selectedIndex = 1;
   AssetImage map = AssetImage("assets/map.jpg");
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    futureBuilder();
+    super.initState();
+  }
 
   void onTapped(int value) {
     setState(() {
@@ -25,98 +36,118 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
+  futureBuilder() {
+    List<Widget> currentList = [
+      _image(),
+      _areaSpecialistsText(),
+    ];
+    firestoreInstance.collection("hospitals").get().then((querySnapshot) {
+      querySnapshot.docs.forEach((result) {
+        currentList.add(_specialistsCardInfo(result.data()));
+      });
+    });
+    setState(() {
+      hospitalList = currentList;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.person, //logo will go here
-            color: Colors.black,
-          ),
-          onPressed: () {
-            // Go to profile page
-            Navigator.of(context).pushReplacementNamed('/profile');
-          },
-        ),
-        title: new Text(
-          'Swastyaloop',
-          style: new TextStyle(
-            color: Colors.black,
-          ),
-        ),
-      ),
-      backgroundColor: mainBgColor,
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Stack(
-              alignment: AlignmentDirectional.topCenter,
-              overflow: Overflow.visible,
-              children: <Widget>[
-                _backBgCover(),
-                _greetings(),
-                // _moodsHolder(),
-              ],
+    return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.person, //logo will go here
+              color: Colors.black,
             ),
-            SizedBox(
-              height: 10.0,
+            onPressed: () {
+              // Go to profile page
+              Navigator.of(context).pushReplacementNamed('/profile');
+            },
+          ),
+          title: new Text(
+            'Swastyaloop',
+            style: new TextStyle(
+              color: Colors.black,
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Padding(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
+          ),
+        ),
+        backgroundColor: mainBgColor,
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Stack(
+                alignment: AlignmentDirectional.topCenter,
+                overflow: Overflow.visible,
+                children: <Widget>[
+                  _backBgCover(),
+                  _greetings(),
+                  // _moodsHolder(),
+                ],
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: hospitalList,
+                    //<Widget>[
                     // _notificationCard(),
                     // _nextAppointmentText(),
                     // _appoinmentCard(),
 
-                    _image(),
-                    _areaSpecialistsText(),
-                    _specialistsCardInfo(),
-                    _specialistsCardInfo(),
-                    _specialistsCardInfo(),
+                    // _image(),
+                    // _areaSpecialistsText(),
+                    // getHospitalInfo(),
+                    // _specialistsCardInfo(),
+                    // _specialistsCardInfo(),
+                    // _specialistsCardInfo(),
 
                     //_specialistsCardInfo(),
-                  ],
+                    //],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        currentIndex: _selectedIndex,
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(
-                LineAwesomeIcons.home,
-                size: 30.0,
-              ),
-              title: Text('1')),
-          BottomNavigationBarItem(
-              icon: Icon(
-                LineAwesomeIcons.search,
-                size: 30.0,
-              ),
-              title: Text('2')),
-          BottomNavigationBarItem(
-              icon: Icon(
-                LineAwesomeIcons.gratipay,
-                size: 30.0,
-              ),
-              title: Text('3')),
-        ],
-        onTap: onTapped,
-      ),
-    );
+        bottomNavigationBar: BottomNavigationBar(
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          currentIndex: _selectedIndex,
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(
+                  LineAwesomeIcons.home,
+                  size: 30.0,
+                ),
+                title: Text('1')),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  LineAwesomeIcons.search,
+                  size: 30.0,
+                ),
+                title: Text('2')),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  LineAwesomeIcons.gratipay,
+                  size: 30.0,
+                ),
+                title: Text('3')),
+          ],
+          onTap: onTapped,
+        ),
+      );
+    });
   }
 
   Container _backBgCover() {
@@ -132,7 +163,11 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget _specialistsCardInfo() {
+  Widget _specialistsCardInfo(var hospital_data) {
+    if (hospital_data == {}) {
+      return Container();
+    }
+    var data = hospital_data;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 18.0),
       margin: EdgeInsets.only(
@@ -168,73 +203,114 @@ class _SearchPageState extends State<SearchPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  RichText(
-                    text: TextSpan(
-                      text: 'Wellness\n',
-                      style: TextStyle(
-                        color: Colors.purple,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        height: 1.3,
+                  SizedBox(
+                    width: 150,
+                    child: RichText(
+                      overflow: TextOverflow.clip,
+                      text: TextSpan(
+                        text: data['Type'] + ' Hospital\n',
+                        style: TextStyle(
+                          color: Colors.purple,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          height: 1.3,
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: data['Hname'] + '\n',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          TextSpan(
+                            text: data['Contact'] + '\n',
+                            style: TextStyle(
+                              color: Colors.black45,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                            ),
+                          ),
+                          TextSpan(
+                            text: data['Address'] + '\n',
+                            style: TextStyle(
+                              color: Colors.black38,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
                       ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'Dr Ayor Kruger',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '\nPoplar Pharma Limited',
-                          style: TextStyle(
-                            color: Colors.black45,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '\nDermatologist \nSAn Franscisco CA | 5 min',
-                          style: TextStyle(
-                            color: Colors.black38,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
                     ),
                   ),
                   SizedBox(
                     height: 6.0,
                   ),
-                  RaisedButton(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacementNamed('/hprofile');
-                    },
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(80.0)),
-                    padding: const EdgeInsets.all(0.0),
-                    child: Ink(
-                      decoration: const BoxDecoration(
-                        gradient: purpleGradient,
-                        borderRadius: BorderRadius.all(Radius.circular(80.0)),
-                      ),
-                      child: Container(
-                        constraints: const BoxConstraints(
-                            minWidth: 88.0,
-                            minHeight: 36.0), // min sizes for Material buttons
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'Book Visit',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 13,
-                              color: Colors.white),
+                  Row(
+                    children: [
+                      RaisedButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushReplacementNamed('/hprofile');
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(80.0)),
+                        padding: const EdgeInsets.all(0.0),
+                        child: Ink(
+                          decoration: const BoxDecoration(
+                            gradient: purpleGradient,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(80.0)),
+                          ),
+                          child: Container(
+                            constraints: const BoxConstraints(
+                                minWidth: 88.0,
+                                minHeight:
+                                    36.0), // min sizes for Material buttons
+                            alignment: Alignment.center,
+                            child: const Text(
+                              'View Details',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 13,
+                                  color: Colors.white),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
+                      SizedBox(
+                        width: 15.0,
+                      ),
+                      RaisedButton(
+                        onPressed: () {},
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(80.0)),
+                        padding: const EdgeInsets.all(0.0),
+                        child: Ink(
+                          decoration: const BoxDecoration(
+                            gradient: purpleGradient,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(80.0)),
+                          ),
+                          child: Container(
+                            constraints: const BoxConstraints(
+                                minWidth: 88.0,
+                                minHeight:
+                                    36.0), // min sizes for Material buttons
+                            alignment: Alignment.center,
+                            child: const Text(
+                              'Book Bed',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 13,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ],
@@ -263,14 +339,21 @@ class _SearchPageState extends State<SearchPage> {
               color: Colors.black,
             ),
           ),
-          Text(
-            'See All',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: midColor,
-            ),
-          ),
+          FlatButton(
+              onPressed: () {
+                setState(() {
+                  futureBuilder();
+                  print(hospitalList);
+                });
+              },
+              child: Text(
+                'See All',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: midColor,
+                ),
+              ))
         ],
       ),
     );
@@ -314,7 +397,6 @@ class _SearchPageState extends State<SearchPage> {
           ),
           Container(
             width: 350.0,
-            height: 60.0,
             child: Column(
               children: [
                 TextField(
