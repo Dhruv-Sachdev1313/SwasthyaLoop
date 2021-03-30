@@ -32,7 +32,6 @@ void main() async {
       'gender': pref.getString('gender'),
       'age': pref.getInt('age')
     };
-    print(user);
   }
   runApp(MyApp());
 }

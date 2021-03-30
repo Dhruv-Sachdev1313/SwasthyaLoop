@@ -19,11 +19,11 @@ class _SearchPageState extends State<SearchPage> {
   AssetImage map = AssetImage("assets/map.jpg");
   String _bedType;
   num _bedCount;
+  bool isLoading = false;
 
   @override
   void initState() {
-    // TODO: implement initState
-    futureBuilder();
+    _getHospitals();
     super.initState();
   }
 
@@ -40,18 +40,20 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
-  futureBuilder() {
+  _getHospitals() {
     List<Widget> currentList = [
       _image(),
       _areaSpecialistsText(),
     ];
+
     firestoreInstance.collection("hospitals").get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
         currentList.add(_specialistsCardInfo(result.data()));
       });
-    });
-    setState(() {
-      hospitalList = currentList;
+      setState(() {
+        isLoading = false;
+        hospitalList = currentList;
+      });
     });
   }
 
@@ -104,20 +106,6 @@ class _SearchPageState extends State<SearchPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: hospitalList,
-                    //<Widget>[
-                    // _notificationCard(),
-                    // _nextAppointmentText(),
-                    // _appoinmentCard(),
-
-                    // _image(),
-                    // _areaSpecialistsText(),
-                    // getHospitalInfo(),
-                    // _specialistsCardInfo(),
-                    // _specialistsCardInfo(),
-                    // _specialistsCardInfo(),
-
-                    //_specialistsCardInfo(),
-                    //],
                   ),
                 ),
               ),
@@ -351,8 +339,7 @@ class _SearchPageState extends State<SearchPage> {
           FlatButton(
               onPressed: () {
                 setState(() {
-                  futureBuilder();
-                  print(hospitalList);
+                  isLoading = false;
                 });
               },
               child: Text(
