@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
           "/search": (BuildContext context) => SearchPage(),
           "/chat": (BuildContext context) => ChatPage(),
           "/profile": (BuildContext context) => ProfilePage(),
-          "/hprofile": (BuildContext context) => HospitalProfilePage(),
+          "/hprofile": (BuildContext context) => HospitalProfilePage(data: {}),
         });
   }
 }

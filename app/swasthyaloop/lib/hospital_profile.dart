@@ -446,7 +446,7 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                                 onTap: () {},
                                 child: Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Icon(Icons.pageview),
+                                  child: Icon(Icons.public),
                                 ),
                               ),
                             )),
