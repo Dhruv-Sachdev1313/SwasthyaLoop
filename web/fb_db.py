@@ -13,7 +13,6 @@ delete_done = threading.Event()
 # Create a callback on_snapshot function to capture changes
 def on_snapshot(col_snapshot, changes, read_time):
     print(u'Callback received query snapshot.')
-    print(u'Current cities in California: ')
     for change in changes:
         if change.type.name == 'ADDED':
             print(f'New request: {change.document.id}')
@@ -29,7 +28,7 @@ def on_snapshot(col_snapshot, changes, read_time):
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    col_query = requests_coll.where(u'hid', u'==', u' WXoBQ6WgZyuMgKZ5NFmU')
+    col_query = requests_coll.where(u'hid', u'==', u'WXoBQ6WgZyuMgKZ5NFmU')
     query_watch = col_query.on_snapshot(on_snapshot)
     return jsonify({"status":"fine"})
 
