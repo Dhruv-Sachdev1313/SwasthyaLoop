@@ -33,18 +33,31 @@ class _ChatPageState extends State<ChatPage> {
         leading: IconButton(
           icon: const Icon(
             Icons.person, //logo will go here
-            color: Colors.black,
+            color: midColor,
           ),
           onPressed: () {
             // Go to profile page
             Navigator.of(context).pushReplacementNamed('/profile');
           },
         ),
-        title: new Text(
-          'Swastyaloop',
-          style: new TextStyle(
-            color: Colors.black,
-          ),
+        title: Row(
+          children: [
+            SizedBox(
+              width: 32.0,
+            ),
+            Image.asset(
+              'assets/icons/logo_small.png',
+              fit: BoxFit.contain,
+              height: 32,
+            ),
+            Container(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Swastyaloop',
+                style: TextStyle(color: pinklogoColor),
+              ),
+            )
+          ],
         ),
       ),
       backgroundColor: mainBgColor,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swasthyaloop/hospital_profile.dart';
 import 'package:swasthyaloop/utils.dart';
 import 'package:swasthyaloop/widgets/moods.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -6,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 import 'main.dart';
+import 'utils.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -68,18 +70,31 @@ class _SearchPageState extends State<SearchPage> {
           leading: IconButton(
             icon: const Icon(
               Icons.person, //logo will go here
-              color: Colors.black,
+              color: midColor,
             ),
             onPressed: () {
               // Go to profile page
               Navigator.of(context).pushReplacementNamed('/profile');
             },
           ),
-          title: new Text(
-            'Swastyaloop',
-            style: new TextStyle(
-              color: Colors.black,
-            ),
+          title: Row(
+            children: [
+              SizedBox(
+                width: 32.0,
+              ),
+              Image.asset(
+                'assets/icons/logo_small.png',
+                fit: BoxFit.contain,
+                height: 32,
+              ),
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Swastyaloop',
+                  style: TextStyle(color: pinklogoColor),
+                ),
+              )
+            ],
           ),
         ),
         backgroundColor: mainBgColor,
@@ -155,11 +170,11 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget _specialistsCardInfo(var hospital_data) {
-    if (hospital_data == {}) {
+  Widget _specialistsCardInfo(var hospitalData) {
+    if (hospitalData == {}) {
       return Container();
     }
-    var data = hospital_data;
+    var data = hospitalData;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 18.0),
       margin: EdgeInsets.only(
@@ -242,9 +257,14 @@ class _SearchPageState extends State<SearchPage> {
                   Row(
                     children: [
                       RaisedButton(
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushReplacementNamed('/hprofile');
+                        onPressed: () => {
+                          print(data),
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  HospitalProfilePage(data: data),
+                            ),
+                          )
                         },
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(80.0)),

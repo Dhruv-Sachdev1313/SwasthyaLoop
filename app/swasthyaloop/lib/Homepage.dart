@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'main.dart';
 import 'Screens/Login/components/body.dart' as loginBody;
-import 'package:swasthyaloop/utils.dart';
+import 'utils.dart';
 import 'package:swasthyaloop/widgets/moods.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'search.dart';
@@ -43,18 +43,31 @@ class _HomepageState extends State<Homepage> {
         leading: IconButton(
           icon: const Icon(
             Icons.person, //logo will go here
-            color: Colors.black,
+            color: midColor,
           ),
           onPressed: () {
             // Go to profile page
             Navigator.of(context).pushReplacementNamed('/profile');
           },
         ),
-        title: new Text(
-          'Swastyaloop',
-          style: new TextStyle(
-            color: Colors.black,
-          ),
+        title: Row(
+          children: [
+            SizedBox(
+              width: 32.0,
+            ),
+            Image.asset(
+              'assets/icons/logo_small.png',
+              fit: BoxFit.contain,
+              height: 32,
+            ),
+            Container(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Swastyaloop',
+                style: TextStyle(color: pinklogoColor),
+              ),
+            )
+          ],
         ),
       ),
       backgroundColor: mainBgColor,
@@ -84,37 +97,20 @@ class _HomepageState extends State<Homepage> {
                     _notificationCard(),
                     _nextAppointmentText(),
                     _appoinmentCard(),
+                    _pastAppointmentText(),
+                    _emptyCard(),
                     _areaSpecialistsText(),
-                    _specialistsCardInfo(),
-                    _specialistsCardInfo(),
-                    _specialistsCardInfo(),
+                    _specialistsCardInfo('Private Practitioner', 'Dr. M. Jain',
+                        'MBBS, Child Specialist', 'Parel, Mumbai', '3'),
+                    _specialistsCardInfo('Hospital HoD', 'Dr. Ayush Srivastava',
+                        'MD, Cardiologist', 'Worli, Mumbai', '5'),
+                    _specialistsCardInfo('OPD JJ Hospital', 'Dr. Dinesh R.',
+                        'MD, Neurologist', 'Kurla, Mumbai', '10'),
                     //_specialistsCardInfo(),
                   ],
                 ),
               ),
             ),
-            Container(
-                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                child: Material(
-                  color: Colors.white30,
-                  child: GestureDetector(
-                    onTap: () {
-                      AuthService appAuth = new AuthService();
-                      appAuth.logout().then((_) =>
-                          Navigator.of(context).pushReplacementNamed('/login'));
-                    },
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Log out',
-                        style: TextStyle(
-                            color: Colors.redAccent,
-                            fontSize: 20.0,
-                            fontFamily: 'Montserrat'),
-                      ),
-                    ),
-                  ),
-                ))
           ],
         ),
       ),
@@ -221,7 +217,34 @@ class _HomepageState extends State<Homepage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            'Your Next Appointment',
+            'Your Current Bookings',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+            ),
+          ),
+          Text(
+            'See All',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: midColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _pastAppointmentText() {
+    return Container(
+      margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            'Your Past Bookings',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
@@ -260,7 +283,7 @@ class _HomepageState extends State<Homepage> {
               ),
               RichText(
                 text: TextSpan(
-                  text: 'Dr Dan MlayahFX',
+                  text: 'P. D. Hinduja Hospital',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -269,19 +292,11 @@ class _HomepageState extends State<Homepage> {
                   ),
                   children: <TextSpan>[
                     TextSpan(
-                      text: '\nSunday,May 5th at 8:00 PM',
+                      text: '\n1 Isolation Bed',
                       style: TextStyle(
                         color: Colors.black45,
                         fontWeight: FontWeight.w400,
                         fontSize: 15,
-                      ),
-                    ),
-                    TextSpan(
-                      text: '\n570 Kyemmer Stores \nNairobi Kenya C -54 Drive',
-                      style: TextStyle(
-                        color: Colors.black38,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
                       ),
                     ),
                   ],
@@ -312,11 +327,44 @@ class _HomepageState extends State<Homepage> {
             children: <Widget>[
               _iconBuilder(LineAwesomeIcons.check_circle, 'Check-in'),
               _iconBuilder(LineAwesomeIcons.times_circle, 'Cancel'),
-              _iconBuilder(LineAwesomeIcons.calendar_times_o, 'Calender'),
               _iconBuilder(LineAwesomeIcons.compass, 'Directions'),
             ],
           )
         ],
+      ),
+    );
+  }
+
+  Container _emptyCard() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 18.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Center(
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "No past Bookings found",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(
+                "Go to search page to book appointments",
+                style: TextStyle(color: Colors.grey.shade500),
+              ),
+            ]),
+          ],
+        ),
       ),
     );
   }
@@ -403,7 +451,8 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  Widget _specialistsCardInfo() {
+  Widget _specialistsCardInfo(
+      String type, String name, String spec, String area, String time) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 18.0),
       margin: EdgeInsets.only(
@@ -441,7 +490,7 @@ class _HomepageState extends State<Homepage> {
                 children: <Widget>[
                   RichText(
                     text: TextSpan(
-                      text: 'Wellness\n',
+                      text: '$type\n',
                       style: TextStyle(
                         color: Colors.purple,
                         fontSize: 12,
@@ -450,7 +499,7 @@ class _HomepageState extends State<Homepage> {
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'Dr Ayor Kruger',
+                          text: '$name',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -458,7 +507,7 @@ class _HomepageState extends State<Homepage> {
                           ),
                         ),
                         TextSpan(
-                          text: '\nPoplar Pharma Limited',
+                          text: '\n$spec',
                           style: TextStyle(
                             color: Colors.black45,
                             fontWeight: FontWeight.w400,
@@ -466,7 +515,7 @@ class _HomepageState extends State<Homepage> {
                           ),
                         ),
                         TextSpan(
-                          text: '\nDermatologist \nSAn Franscisco CA | 5 min',
+                          text: '\n$area | $time min',
                           style: TextStyle(
                             color: Colors.black38,
                             fontWeight: FontWeight.w400,

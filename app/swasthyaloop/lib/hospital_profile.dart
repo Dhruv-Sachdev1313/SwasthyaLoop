@@ -6,8 +6,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 
 class HospitalProfilePage extends StatefulWidget {
+  var data;
+
+  HospitalProfilePage({Key key, @required this.data}) : super(key: key);
+
   @override
-  _HospitalProfilePageState createState() => _HospitalProfilePageState();
+  _HospitalProfilePageState createState() => _HospitalProfilePageState(data);
 }
 
 class _HospitalProfilePageState extends State<HospitalProfilePage> {
@@ -15,6 +19,9 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
   String _bedType;
   num _bedCount;
   final firestoreInstance = FirebaseFirestore.instance;
+  var data;
+
+  _HospitalProfilePageState(this.data);
 
   Widget _buildPopupDialog(BuildContext context) {
     return StatefulBuilder(
@@ -181,7 +188,7 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                             ])),
                     SizedBox(height: 20.0),
                     Text(
-                      "Hospital name",
+                      data["Hname"],
                       style: TextStyle(
                           fontSize: 30.0,
                           fontWeight: FontWeight.bold,
@@ -281,7 +288,7 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                                   ),
                                 )),
                             Container(
-                                padding: EdgeInsets.fromLTRB(20, 25, 0, 0),
+                                padding: EdgeInsets.fromLTRB(10, 25, 0, 0),
                                 child: Material(
                                   color: Colors.white30,
                                   child: GestureDetector(
@@ -289,7 +296,7 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        'Private',
+                                        data['Type'] ?? "Private",
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 20.0,
@@ -324,7 +331,7 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                                   ),
                                 )),
                             Container(
-                                padding: EdgeInsets.fromLTRB(20, 25, 0, 0),
+                                padding: EdgeInsets.fromLTRB(10, 25, 0, 0),
                                 child: Material(
                                   color: Colors.white30,
                                   child: GestureDetector(
@@ -332,7 +339,8 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        '90',
+                                        data['Total_Capacity'].toString() ??
+                                            '50',
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 20.0,
@@ -362,17 +370,8 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                               child: GestureDetector(
                                 onTap: () {},
                                 child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'CONTACT:',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20.0,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
+                                    alignment: Alignment.centerLeft,
+                                    child: Icon(Icons.phone)),
                               ),
                             )),
                         Container(
@@ -384,7 +383,7 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    '2417-7600',
+                                    data['Contact'],
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 15.0,
@@ -409,15 +408,7 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                                 onTap: () {},
                                 child: Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'EMAIL:',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20.0,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                                  child: Icon(Icons.email),
                                 ),
                               ),
                             )),
@@ -430,7 +421,7 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'ajeh@vsnl.com',
+                                    data['Email'].toString() ?? '',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 15.0,
@@ -455,15 +446,7 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                                 onTap: () {},
                                 child: Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'WEBSITE:',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20.0,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                                  child: Icon(Icons.pageview),
                                 ),
                               ),
                             )),
@@ -476,7 +459,7 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'https://www.adityajyoteye.org',
+                                    data['Website'] ?? '',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 15.0,
@@ -500,17 +483,9 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                               child: GestureDetector(
                                 onTap: () {},
                                 child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'ADDRESS:',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20.0,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
+                                    alignment: Alignment.centerLeft,
+                                    child:
+                                        Icon(Icons.markunread_mailbox_rounded)),
                               ),
                             )),
                         Container(
@@ -522,7 +497,7 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'Valiji Ladha Road, Mulund(W)',
+                                    data['Address'] ?? '',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 15.0,
