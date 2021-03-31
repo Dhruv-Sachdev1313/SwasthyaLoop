@@ -22,7 +22,6 @@ def home():
     if session.get('email'):
         hosp_info = session.get('hosp_info', {})
         beds = session.get('beds', {})
-        print(bed_docs_id)
         return render_template('index.html', hosp_info=hosp_info, beds=beds, req_data=req_data)
     else:
         return redirect('/login')
@@ -33,7 +32,6 @@ def dbchanges():
     data = request.get_json(force=True)
     if data:
         req_data[data['id']] = data['data']
-    # print(req_data)
     #TODO: Update data on index
     return jsonify({"status":"success"})
 
@@ -44,7 +42,6 @@ def login():
         email = request.form.get('email')
         password = request.form.get('password')
         session['email'] = email
-        # TODO: implement auth
         query_ref = hosp_coll.where(u'Email', u'==', u'{}'.format(email)).stream()
         hosp_info = next(query_ref)
         session['hosp_id'] = hosp_info.id

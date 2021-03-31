@@ -1,27 +1,4 @@
-/*
-Template Name: Material Pro Admin
-Author: Themedesigner
-Email: niravjoshi87@gmail.com
-File: scss
-*/
-/**
- * Table Of Content
- *
- * 	1. Globals
- *	2. Headers
- *	3. Navigations
- *	4. Banners
- *	5. Footers
- *	6. app
- *	7. Widgets
- *	8. Custom Templates
- */
-/*
-Template Name: Material Pro Admin
-Author: Themedesigner
-Email: niravjoshi87@gmail.com
-File: scss
-*/
+
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700");
 /*Theme Colors*/
 /*bootstrap Color*/
@@ -51,27 +28,7 @@ File: scss
     top: calc(50% - 3.5px);
     left: calc(50% - 3.5px); }
 
-/*
-Template Name: Material Pro Admin
-Author: Themedesigner
-Email: niravjoshi87@gmail.com
-File: scss
-*/
-/**
- * Table Of Content
- *
- * 	1. Globals
- *	2. Headers
- *	3. Navigations
- *	4. Banners
- *	5. Footers
- *	6. Posts
- *	7. Widgets
- *	8. Custom Templates
- */
-/******************* 
-Global Styles 
-*******************/
+
 * {
   outline: none; }
 
