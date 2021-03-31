@@ -6,6 +6,7 @@ const midColor = Color(0xFF522349);
 const lightColor = Color(0xFFA52C4D);
 const darkRedColor = Color(0xFFFA695C);
 const lightRedColor = Color(0xFFFD685A);
+const pinklogoColor = Color(0xFFFC6F99);
 
 const purpleGradient = LinearGradient(
   colors: <Color>[darkColor, midColor, lightColor],
@@ -15,7 +16,14 @@ const purpleGradient = LinearGradient(
 );
 
 const redGradient = LinearGradient(
-  colors: <Color>[darkRedColor, lightRedColor],
+  colors: <Color>[midColor, lightColor],
+  stops: [0.0, 1.0],
+  begin: Alignment.centerLeft,
+  end: Alignment.centerRight,
+);
+
+const darkRedGradient = LinearGradient(
+  colors: <Color>[lightColor, lightRedColor],
   stops: [0.0, 1.0],
   begin: Alignment.centerLeft,
   end: Alignment.centerRight,
@@ -23,3 +31,5 @@ const redGradient = LinearGradient(
 
 const USER_IMAGE =
     'https://cdn4.iconfinder.com/data/icons/people-avatar-flat-1/64/girl_chubby_beautiful_people_woman_lady_avatar-512.png';
+
+final AssetImage logo = AssetImage("assets/icons/logo_small.png");

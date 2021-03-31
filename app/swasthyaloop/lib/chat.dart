@@ -33,18 +33,31 @@ class _ChatPageState extends State<ChatPage> {
         leading: IconButton(
           icon: const Icon(
             Icons.person, //logo will go here
-            color: Colors.black,
+            color: lightColor,
           ),
           onPressed: () {
             // Go to profile page
             Navigator.of(context).pushReplacementNamed('/profile');
           },
         ),
-        title: new Text(
-          'Swastyaloop',
-          style: new TextStyle(
-            color: Colors.black,
-          ),
+        title: Row(
+          children: [
+            SizedBox(
+              width: 28.0,
+            ),
+            Image.asset(
+              'assets/icons/logo_red_small.png',
+              fit: BoxFit.contain,
+              height: 48,
+            ),
+            Container(
+              padding: const EdgeInsets.all(0.0),
+              child: Text(
+                'SwasthyaLoop',
+                style: TextStyle(color: lightColor),
+              ),
+            )
+          ],
         ),
       ),
       backgroundColor: mainBgColor,
@@ -168,9 +181,9 @@ class _ChatPageState extends State<ChatPage> {
             ),
             ListTile(
                 leading: CircleAvatar(
-                  maxRadius: 25,
-                  backgroundImage: NetworkImage(messageData[i].imageUrl),
-                ),
+                    maxRadius: 25,
+                    backgroundImage: NetworkImage(messageData[i].imageUrl),
+                    backgroundColor: Colors.pink.shade50),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[

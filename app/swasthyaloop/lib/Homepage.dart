@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
-import 'main.dart' as main;
+import 'main.dart';
 import 'Screens/Login/components/body.dart' as loginBody;
-import 'package:swasthyaloop/utils.dart';
+import 'utils.dart';
 import 'package:swasthyaloop/widgets/moods.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'search.dart';
@@ -32,7 +32,6 @@ class _HomepageState extends State<Homepage> {
     } else {
       Navigator.of(context).pushReplacementNamed('/chat');
     }
-    // Navigator.of(context).pushReplacementNamed('/search');
   }
 
   @override
@@ -44,18 +43,31 @@ class _HomepageState extends State<Homepage> {
         leading: IconButton(
           icon: const Icon(
             Icons.person, //logo will go here
-            color: Colors.black,
+            color: lightColor,
           ),
           onPressed: () {
             // Go to profile page
             Navigator.of(context).pushReplacementNamed('/profile');
           },
         ),
-        title: new Text(
-          'Swastyaloop',
-          style: new TextStyle(
-            color: Colors.black,
-          ),
+        title: Row(
+          children: [
+            SizedBox(
+              width: 28.0,
+            ),
+            Image.asset(
+              'assets/icons/logo_red_small.png',
+              fit: BoxFit.contain,
+              height: 48,
+            ),
+            Container(
+              padding: const EdgeInsets.all(0.0),
+              child: Text(
+                'SwasthyaLoop',
+                style: TextStyle(color: lightColor),
+              ),
+            )
+          ],
         ),
       ),
       backgroundColor: mainBgColor,
@@ -85,10 +97,15 @@ class _HomepageState extends State<Homepage> {
                     _notificationCard(),
                     _nextAppointmentText(),
                     _appoinmentCard(),
+                    _pastAppointmentText(),
+                    _emptyCard(),
                     _areaSpecialistsText(),
-                    _specialistsCardInfo(),
-                    _specialistsCardInfo(),
-                    _specialistsCardInfo(),
+                    _specialistsCardInfo('Private Practitioner', 'Dr. M. Jain',
+                        'MBBS, Child Specialist', 'Parel, Mumbai', '3'),
+                    _specialistsCardInfo('Hospital HoD', 'Dr. Ayush Srivastava',
+                        'MD, Cardiologist', 'Worli, Mumbai', '5'),
+                    _specialistsCardInfo('OPD JJ Hospital', 'Dr. Dinesh R.',
+                        'MD, Neurologist', 'Kurla, Mumbai', '10'),
                     //_specialistsCardInfo(),
                   ],
                 ),
@@ -170,7 +187,7 @@ class _HomepageState extends State<Homepage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Hi ${main.user["fname"]}',
+            'Hi ${user["fname"]}',
             style: TextStyle(
               fontSize: 36,
               fontWeight: FontWeight.w500,
@@ -200,7 +217,34 @@ class _HomepageState extends State<Homepage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            'Your Next Appointment',
+            'Your Current Bookings',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+            ),
+          ),
+          Text(
+            'See All',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: midColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _pastAppointmentText() {
+    return Container(
+      margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            'Your Past Bookings',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
@@ -239,7 +283,7 @@ class _HomepageState extends State<Homepage> {
               ),
               RichText(
                 text: TextSpan(
-                  text: 'Dr Dan MlayahFX',
+                  text: 'P. D. Hinduja Hospital',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -248,19 +292,11 @@ class _HomepageState extends State<Homepage> {
                   ),
                   children: <TextSpan>[
                     TextSpan(
-                      text: '\nSunday,May 5th at 8:00 PM',
+                      text: '\n1 Isolation Bed',
                       style: TextStyle(
                         color: Colors.black45,
                         fontWeight: FontWeight.w400,
                         fontSize: 15,
-                      ),
-                    ),
-                    TextSpan(
-                      text: '\n570 Kyemmer Stores \nNairobi Kenya C -54 Drive',
-                      style: TextStyle(
-                        color: Colors.black38,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
                       ),
                     ),
                   ],
@@ -291,11 +327,44 @@ class _HomepageState extends State<Homepage> {
             children: <Widget>[
               _iconBuilder(LineAwesomeIcons.check_circle, 'Check-in'),
               _iconBuilder(LineAwesomeIcons.times_circle, 'Cancel'),
-              _iconBuilder(LineAwesomeIcons.calendar_times_o, 'Calender'),
               _iconBuilder(LineAwesomeIcons.compass, 'Directions'),
             ],
           )
         ],
+      ),
+    );
+  }
+
+  Container _emptyCard() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 18.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Center(
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "No past Bookings found",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(
+                "Go to search page to book appointments",
+                style: TextStyle(color: Colors.grey.shade500),
+              ),
+            ]),
+          ],
+        ),
       ),
     );
   }
@@ -331,40 +400,27 @@ class _HomepageState extends State<Homepage> {
         // gradient: redGradient,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: ListTile(
+      child: new Center(
+          child: ListTile(
         leading: Icon(
-          LineAwesomeIcons.calendar_check_o,
+          LineAwesomeIcons.empire,
           color: Colors.white,
           size: 32,
         ),
-        title: Text(
-          'Your Visit with \nDr Kyecera',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
+        title: new Center(
+          child: Text('EMERGENCY',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              )),
         ),
-        trailing: OutlineButton(
-          onPressed: () {},
-          color: Colors.transparent,
-          borderSide: BorderSide(
-            color: Colors.white,
-            width: 1.0,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(26),
-          ),
-          child: Text(
-            'Review & Add Notes',
-            style: TextStyle(
-              fontWeight: FontWeight.w300,
-              fontSize: 12,
-              color: Colors.white,
-            ),
-          ),
+        trailing: Icon(
+          LineAwesomeIcons.empire,
+          color: Colors.white,
+          size: 32,
         ),
-      ),
+      )),
     );
   }
 
@@ -395,7 +451,8 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  Widget _specialistsCardInfo() {
+  Widget _specialistsCardInfo(
+      String type, String name, String spec, String area, String time) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 18.0),
       margin: EdgeInsets.only(
@@ -433,7 +490,7 @@ class _HomepageState extends State<Homepage> {
                 children: <Widget>[
                   RichText(
                     text: TextSpan(
-                      text: 'Wellness\n',
+                      text: '$type\n',
                       style: TextStyle(
                         color: Colors.purple,
                         fontSize: 12,
@@ -442,7 +499,7 @@ class _HomepageState extends State<Homepage> {
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'Dr Ayor Kruger',
+                          text: '$name',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -450,7 +507,7 @@ class _HomepageState extends State<Homepage> {
                           ),
                         ),
                         TextSpan(
-                          text: '\nPoplar Pharma Limited',
+                          text: '\n$spec',
                           style: TextStyle(
                             color: Colors.black45,
                             fontWeight: FontWeight.w400,
@@ -458,7 +515,7 @@ class _HomepageState extends State<Homepage> {
                           ),
                         ),
                         TextSpan(
-                          text: '\nDermatologist \nSAn Franscisco CA | 5 min',
+                          text: '\n$area | $time min',
                           style: TextStyle(
                             color: Colors.black38,
                             fontWeight: FontWeight.w400,
