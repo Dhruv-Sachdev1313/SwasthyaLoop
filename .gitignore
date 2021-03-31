@@ -128,7 +128,8 @@ __pypackages__/
 # Environments
 .env
 .venv
-env/
+env/*
+!env/.gitkeep
 venv/
 ENV/
 env.bak/
