@@ -16,7 +16,14 @@ const purpleGradient = LinearGradient(
 );
 
 const redGradient = LinearGradient(
-  colors: <Color>[darkRedColor, lightRedColor],
+  colors: <Color>[midColor, lightColor],
+  stops: [0.0, 1.0],
+  begin: Alignment.centerLeft,
+  end: Alignment.centerRight,
+);
+
+const darkRedGradient = LinearGradient(
+  colors: <Color>[lightColor, lightRedColor],
   stops: [0.0, 1.0],
   begin: Alignment.centerLeft,
   end: Alignment.centerRight,

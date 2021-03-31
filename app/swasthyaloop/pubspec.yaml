@@ -31,6 +31,7 @@ dependencies:
   firebase_auth:
   fluttertoast:
   number_inc_dec:
+  gradient_widgets: ^0.5.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

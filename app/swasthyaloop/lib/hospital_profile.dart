@@ -95,8 +95,6 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
             ),
             RaisedButton(
               onPressed: () {
-                print(_bedCount);
-                print(_bedType);
                 firestoreInstance.collection("bed_requests").add({
                   "hid": "WXoBQ6WgZyuMgKZ5NFmU",
                   "num_of_beds": _bedCount,
@@ -261,14 +259,13 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Row(
                           children: [
                             Container(
-                                padding: EdgeInsets.fromLTRB(20, 25, 0, 0),
+                                padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
                                 child: Material(
                                   color: Colors.white30,
                                   child: GestureDetector(
@@ -288,7 +285,7 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                                   ),
                                 )),
                             Container(
-                                padding: EdgeInsets.fromLTRB(10, 25, 0, 0),
+                                padding: EdgeInsets.fromLTRB(10, 20, 0, 0),
                                 child: Material(
                                   color: Colors.white30,
                                   child: GestureDetector(
@@ -311,7 +308,7 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                         Row(
                           children: [
                             Container(
-                                padding: EdgeInsets.fromLTRB(10, 25, 0, 0),
+                                padding: EdgeInsets.fromLTRB(10, 20, 0, 0),
                                 child: Material(
                                   color: Colors.white30,
                                   child: GestureDetector(
@@ -331,7 +328,7 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                                   ),
                                 )),
                             Container(
-                                padding: EdgeInsets.fromLTRB(10, 25, 0, 0),
+                                padding: EdgeInsets.fromLTRB(10, 20, 0, 0),
                                 child: Material(
                                   color: Colors.white30,
                                   child: GestureDetector(
@@ -351,6 +348,97 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                                   ),
                                 )),
                           ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Divider(
+                      color: Colors.black87,
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Text(
+                      "Availability",
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 90,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "ICU",
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 6.0,
+                              ),
+                              CircularProgressIndicator(
+                                strokeWidth: 5,
+                                backgroundColor: lightColor,
+                                valueColor:
+                                    new AlwaysStoppedAnimation<Color>(midColor),
+                                value:
+                                    data['Available_ICU'] / data['Total_ICU'],
+                              ),
+                              SizedBox(height: 5.0),
+                              Text(
+                                  '${(data['Available_ICU'] / data['Total_ICU'] * 100).round()}%'),
+                              Text(
+                                '${data['Available_ICU']} Beds',
+                                style: TextStyle(fontSize: 10.0),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15.0,
+                        ),
+                        SizedBox(
+                          width: 90,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Non ICU",
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 6.0,
+                              ),
+                              CircularProgressIndicator(
+                                strokeWidth: 5,
+                                backgroundColor: lightColor,
+                                valueColor:
+                                    new AlwaysStoppedAnimation<Color>(midColor),
+                                value: data['Available_Non_ICU'] /
+                                    data['Total_Non_ICU'],
+                              ),
+                              SizedBox(height: 5.0),
+                              Text(
+                                  '${(data['Available_Non_ICU'] / data['Total_Non_ICU'] * 100).round()}%'),
+                              Text(
+                                '${data['Available_Non_ICU']} Beds',
+                                style: TextStyle(fontSize: 10.0),
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -484,8 +572,7 @@ class _HospitalProfilePageState extends State<HospitalProfilePage> {
                                 onTap: () {},
                                 child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child:
-                                        Icon(Icons.markunread_mailbox_rounded)),
+                                    child: Icon(Icons.location_on)),
                               ),
                             )),
                         Container(

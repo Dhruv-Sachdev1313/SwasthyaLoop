@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:number_inc_dec/number_inc_dec.dart';
 import 'main.dart';
 import 'utils.dart';
+import 'package:gradient_widgets/gradient_widgets.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -70,7 +71,7 @@ class _SearchPageState extends State<SearchPage> {
           leading: IconButton(
             icon: const Icon(
               Icons.person, //logo will go here
-              color: midColor,
+              color: lightColor,
             ),
             onPressed: () {
               // Go to profile page
@@ -80,18 +81,18 @@ class _SearchPageState extends State<SearchPage> {
           title: Row(
             children: [
               SizedBox(
-                width: 32.0,
+                width: 28.0,
               ),
               Image.asset(
-                'assets/icons/logo_small.png',
+                'assets/icons/logo_red_small.png',
                 fit: BoxFit.contain,
-                height: 32,
+                height: 48,
               ),
               Container(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(0.0),
                 child: Text(
-                  'Swastyaloop',
-                  style: TextStyle(color: pinklogoColor),
+                  'SwasthyaLoop',
+                  style: TextStyle(color: lightColor),
                 ),
               )
             ],
@@ -175,6 +176,8 @@ class _SearchPageState extends State<SearchPage> {
       return Container();
     }
     var data = hospitalData;
+    data['Total_ICU'] = data['Total_ICU'] ?? '50';
+    data['Total_Non_ICU'] = data['Total_Non_ICU'] ?? '100';
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 18.0),
       margin: EdgeInsets.only(
@@ -232,33 +235,88 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                           ),
                           TextSpan(
-                            text: data['Contact'] + '\n',
+                            text: '\nAvailability:',
                             style: TextStyle(
-                              color: Colors.black45,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 15,
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
                             ),
-                          ),
-                          TextSpan(
-                            text: data['Address'] + '\n',
-                            style: TextStyle(
-                              color: Colors.black38,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
+                          )
                         ],
                       ),
                     ),
                   ),
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 90,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("ICU"),
+                            SizedBox(
+                              height: 6.0,
+                            ),
+                            CircularProgressIndicator(
+                              strokeWidth: 5,
+                              backgroundColor: lightColor,
+                              valueColor:
+                                  new AlwaysStoppedAnimation<Color>(midColor),
+                              value: data['Available_ICU'] / data['Total_ICU'],
+                            ),
+                            SizedBox(height: 5.0),
+                            Text(
+                              '${(data['Available_ICU'] / data['Total_ICU'] * 100).round()}%',
+                            ),
+                            Text(
+                              '${data['Available_ICU']} Beds',
+                              style: TextStyle(fontSize: 10.0),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15.0,
+                      ),
+                      SizedBox(
+                        width: 90,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Non ICU"),
+                            SizedBox(
+                              height: 6.0,
+                            ),
+                            CircularProgressIndicator(
+                              strokeWidth: 5,
+                              backgroundColor: lightColor,
+                              valueColor:
+                                  new AlwaysStoppedAnimation<Color>(midColor),
+                              value: data['Available_Non_ICU'] /
+                                  data['Total_Non_ICU'],
+                            ),
+                            SizedBox(height: 5.0),
+                            Text(
+                                '${(data['Available_Non_ICU'] / data['Total_Non_ICU'] * 100).round()}%'),
+                            Text(
+                              '${data['Available_Non_ICU']} Beds',
+                              style: TextStyle(fontSize: 10.0),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(
-                    height: 6.0,
+                    height: 10.0,
                   ),
                   Row(
                     children: [
                       RaisedButton(
                         onPressed: () => {
-                          print(data),
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) =>
@@ -544,8 +602,6 @@ class _SearchPageState extends State<SearchPage> {
             ),
             RaisedButton(
               onPressed: () {
-                print(_bedCount);
-                print(_bedType);
                 firestoreInstance.collection("bed_requests").add({
                   "hid": "WXoBQ6WgZyuMgKZ5NFmU",
                   "num_of_beds": _bedCount,

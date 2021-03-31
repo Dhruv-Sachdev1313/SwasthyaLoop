@@ -33,7 +33,7 @@ class _ChatPageState extends State<ChatPage> {
         leading: IconButton(
           icon: const Icon(
             Icons.person, //logo will go here
-            color: midColor,
+            color: lightColor,
           ),
           onPressed: () {
             // Go to profile page
@@ -43,18 +43,18 @@ class _ChatPageState extends State<ChatPage> {
         title: Row(
           children: [
             SizedBox(
-              width: 32.0,
+              width: 28.0,
             ),
             Image.asset(
-              'assets/icons/logo_small.png',
+              'assets/icons/logo_red_small.png',
               fit: BoxFit.contain,
-              height: 32,
+              height: 48,
             ),
             Container(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(0.0),
               child: Text(
-                'Swastyaloop',
-                style: TextStyle(color: pinklogoColor),
+                'SwasthyaLoop',
+                style: TextStyle(color: lightColor),
               ),
             )
           ],
