@@ -98,6 +98,8 @@ This repository/project is a submission to [DSC Solution Challenge 2021](https:/
 - [Flutter App UI Motivation](https://github.com/mlayah/healthapp_ui)
 - [Jinja Material Lite Wpx](https://appseed.us/jinja-template/jinja-template-material-lite)
 
+<center>
 <footer>
 Made with ❤️ by Team <strong>Change Makers</strong>
 </footer>
+</center>
